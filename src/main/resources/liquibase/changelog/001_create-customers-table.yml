@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001_create-customers-table
+      author: Ali Aghayev
+      changes:
+        - createTable:
+            tableName: customers
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: birth_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: balance
+                  type: decimal
+                  defaultValue: 100
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(3)
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP(3)
+                  defaultValueComputed: now()
+            remarks: This is the table to store customer details with initial balance set to 100 AZN.
