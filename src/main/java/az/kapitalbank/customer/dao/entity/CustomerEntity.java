@@ -30,5 +30,5 @@ public class CustomerEntity extends BaseEntity {
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
-    private BigDecimal balance = BigDecimal.valueOf(100);
+    private BigDecimal balance;
 }

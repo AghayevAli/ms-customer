@@ -1,6 +1,7 @@
 package az.kapitalbank.customer.exception;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import az.kapitalbank.customer.exception.model.CommonErrorResponse;
@@ -56,7 +57,16 @@ public class CommonErrorHandler {
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(CustomerNotFoundException.class)
-    public CommonErrorResponse handleClientException(CustomerNotFoundException ex) {
+    public CommonErrorResponse handleCustomerNotFound(CustomerNotFoundException ex) {
+        addErrorLog(ex.getErrorCode(), ex.getMessage());
+        return new CommonErrorResponse(
+                ex.getErrorCode(),
+                ex.getMessage());
+    }
+
+    @ResponseStatus(CONFLICT)
+    @ExceptionHandler(InsufficientFundsException.class)
+    public CommonErrorResponse handleInsufficientFunds(InsufficientFundsException ex) {
         addErrorLog(ex.getErrorCode(), ex.getMessage());
         return new CommonErrorResponse(
                 ex.getErrorCode(),
