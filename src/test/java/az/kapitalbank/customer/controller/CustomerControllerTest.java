@@ -1,6 +1,7 @@
 package az.kapitalbank.customer.controller;
 
 import static az.kapitalbank.customer.common.TestConstants.BASE_PATH;
+import static az.kapitalbank.customer.common.TestConstants.CUSTOMER_ID;
 import static az.kapitalbank.customer.common.TestConstants.INVALID_CUSTOMER_REQUEST;
 import static az.kapitalbank.customer.common.TestConstants.VALID_CUSTOMER_REQUEST;
 import static az.kapitalbank.customer.common.TestConstants.VALID_CUSTOMER_RESPONSE;
@@ -8,6 +9,7 @@ import static az.kapitalbank.customer.common.TestUtil.json;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -56,5 +58,21 @@ class CustomerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json(INVALID_CUSTOMER_REQUEST)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getCustomer_ReturnsOk() throws Exception {
+        given(customerService.getCustomer(CUSTOMER_ID))
+                .willReturn(VALID_CUSTOMER_RESPONSE);
+
+        mockMvc.perform(get(BASE_PATH + "/" + CUSTOMER_ID))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.customerId").value(VALID_CUSTOMER_RESPONSE.getCustomerId()))
+                .andExpect(jsonPath("$.name").value(VALID_CUSTOMER_RESPONSE.getName()))
+                .andExpect(jsonPath("$.surname").value(VALID_CUSTOMER_RESPONSE.getSurname()))
+                .andExpect(jsonPath("$.phoneNumber").value(VALID_CUSTOMER_RESPONSE.getPhoneNumber()))
+                .andExpect(jsonPath("$.birthDate").value(VALID_CUSTOMER_RESPONSE.getBirthDate().toString()));
+
+        then(customerService).should().getCustomer(CUSTOMER_ID);
     }
 } 

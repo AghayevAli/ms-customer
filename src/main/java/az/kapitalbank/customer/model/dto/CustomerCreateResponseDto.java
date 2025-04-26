@@ -1,5 +1,6 @@
 package az.kapitalbank.customer.model.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,5 +17,6 @@ public class CustomerCreateResponseDto {
     private String surname;
     private String phoneNumber;
     private LocalDate birthDate;
-    private LocalDate createDate;
+    private BigDecimal balance;
+    private LocalDate createdAt;
 }

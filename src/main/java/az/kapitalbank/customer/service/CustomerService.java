@@ -1,7 +1,10 @@
 package az.kapitalbank.customer.service;
 
+import static az.kapitalbank.customer.exception.constraint.ErrorMessage.CUSTOMER_NOT_FOUND_MESSAGE;
+
 import az.kapitalbank.customer.dao.entity.CustomerEntity;
 import az.kapitalbank.customer.dao.repository.CustomerRepository;
+import az.kapitalbank.customer.exception.CustomerNotFoundException;
 import az.kapitalbank.customer.mapper.CustomerMapper;
 import az.kapitalbank.customer.model.dto.CustomerCreateRequestDto;
 import az.kapitalbank.customer.model.dto.CustomerCreateResponseDto;
@@ -26,4 +29,13 @@ public class CustomerService {
         return CustomerMapper.INSTANCE.toCustomerCreateResponseDto(savedCustomer);
     }
 
+    public CustomerCreateResponseDto getCustomer(Long customerId) {
+
+        CustomerEntity customerEntity =
+                customerRepository.findById(customerId)
+                        .orElseThrow(() -> CustomerNotFoundException.of(CUSTOMER_NOT_FOUND_MESSAGE, customerId));
+
+        return CustomerMapper.INSTANCE.toCustomerCreateResponseDto(customerEntity);
+
+    }
 }

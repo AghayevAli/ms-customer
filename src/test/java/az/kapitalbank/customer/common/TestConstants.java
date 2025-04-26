@@ -24,7 +24,7 @@ public interface TestConstants {
             .surname("Doe")
             .phoneNumber("+994501234567")
             .birthDate(LocalDate.of(1990, 1, 1))
-            .createDate(LocalDate.now())
+            .createdAt(LocalDate.now())
             .build();
 
     CustomerCreateRequestDto INVALID_CUSTOMER_REQUEST = CustomerCreateRequestDto.builder()
