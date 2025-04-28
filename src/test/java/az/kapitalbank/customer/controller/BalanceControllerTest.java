@@ -1,7 +1,7 @@
 package az.kapitalbank.customer.controller;
 
-import static az.kapitalbank.customer.common.TestConstants.BASE_PATH;
 import static az.kapitalbank.customer.common.TestConstants.CUSTOMER_ID;
+import static az.kapitalbank.customer.common.TestConstants.INTERNAL_BASE_PATH;
 import static az.kapitalbank.customer.common.TestConstants.VALID_BALANCE_CHANGE_REQUEST;
 import static az.kapitalbank.customer.common.TestUtil.json;
 import static org.mockito.BDDMockito.then;
@@ -27,7 +27,7 @@ class BalanceControllerTest {
 
     @Test
     void increaseBalance_ValidRequest_ReturnsNoContent() throws Exception {
-        mockMvc.perform(post(BASE_PATH + "/" + CUSTOMER_ID + "/balance/increase")
+        mockMvc.perform(post(INTERNAL_BASE_PATH + "/" + CUSTOMER_ID + "/balance/increase")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json(VALID_BALANCE_CHANGE_REQUEST)))
                 .andExpect(status().isNoContent());
@@ -37,7 +37,7 @@ class BalanceControllerTest {
 
     @Test
     void decreaseBalance_ValidRequest_ReturnsNoContent() throws Exception {
-        mockMvc.perform(post(BASE_PATH + "/" + CUSTOMER_ID + "/balance/decrease")
+        mockMvc.perform(post(INTERNAL_BASE_PATH + "/" + CUSTOMER_ID + "/balance/decrease")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json(VALID_BALANCE_CHANGE_REQUEST)))
                 .andExpect(status().isNoContent());

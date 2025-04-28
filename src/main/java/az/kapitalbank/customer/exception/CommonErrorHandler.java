@@ -7,9 +7,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import az.kapitalbank.customer.exception.model.CommonErrorResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -44,6 +46,7 @@ public class CommonErrorHandler {
     public CommonErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         String errorMessage = ex.getBindingResult().getFieldErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .filter(Objects::nonNull)
                 .findFirst()
                 .orElse("Invalid input");
 
@@ -71,6 +74,18 @@ public class CommonErrorHandler {
         return new CommonErrorResponse(
                 ex.getErrorCode(),
                 ex.getMessage());
+    }
+
+    @ResponseStatus(CONFLICT)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public CommonErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        String errorCode = "duplicate_key_violation";
+
+        String message = Optional.ofNullable(ex.getRootCause())
+                .map(Throwable::getMessage)
+                .orElse(ex.getMessage());
+
+        return new CommonErrorResponse(errorCode, message);
     }
 
     private static void addErrorLog(String errorCode, String errorMessage) {

@@ -11,6 +11,7 @@ import java.util.UUID;
 public interface TestConstants {
 
     String BASE_PATH = "/api/v1/customers";
+    String INTERNAL_BASE_PATH = "/api/v1/internal/customers";
     Long CUSTOMER_ID = 1L;
     UUID TRANSACTION_ID = UUID.fromString("fa213214-92ea-4c54-820c-81dece9bb318");
 
